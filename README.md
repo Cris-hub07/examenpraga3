@@ -38,6 +38,10 @@ Contiene los servicios que aplican las reglas del sistema, como registro de usua
 - `src/presentacion`
 Contiene la interfaz de consola y el punto de entrada del programa en la clase `Main`.
 
+## Documentacion Visual
+
+Puedes consultar el diagrama del proyecto en [DIAGRAMA_PROYECTO.md](DIAGRAMA_PROYECTO.md).
+
 ## Tecnologias Utilizadas
 
 - Java
