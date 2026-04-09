@@ -2,20 +2,25 @@
 
 ## Descripcion
 
-Este proyecto es una aplicacion de consola en Java para gestionar el acceso de usuarios a un laboratorio.
-Permite registrar usuarios, controlar entradas y salidas, consultar el historial de accesos y calcular el tiempo total de permanencia dentro del laboratorio.
+Este proyecto es una aplicacion de escritorio en Java para gestionar el acceso de usuarios a un laboratorio.
+Permite registrar usuarios, controlar entradas y salidas, consultar el historial de accesos y calcular el tiempo total de permanencia dentro del laboratorio desde una interfaz grafica.
 
 El sistema esta organizado con arquitectura en capas para mantener una separacion clara entre entidades, acceso a datos, logica de negocio y presentacion.
 
 ## Como ejecutar
 
-1. Compilar el proyecto:
+1. Abrir la aplicacion con doble clic:
+
+- Usa el archivo `AbrirSistema.bat`.
+- Si prefieres abrirla sin mostrar consola, usa `AbrirSistema.vbs`.
+
+2. Compilar el proyecto manualmente:
 
 ```bash
 javac -d out src/entidades/*.java src/accesodatos/*.java src/logicanegocio/*.java src/presentacion/*.java
 ```
 
-2. Ejecutar la aplicacion:
+3. Ejecutar la aplicacion manualmente:
 
 ```bash
 java -cp out presentacion.Main
@@ -36,7 +41,7 @@ Contiene los DAO encargados de leer y escribir la informacion en archivos `.txt`
 Contiene los servicios que aplican las reglas del sistema, como registro de usuarios, entradas, salidas y reportes.
 
 - `src/presentacion`
-Contiene la interfaz de consola y el punto de entrada del programa en la clase `Main`.
+Contiene la interfaz grafica Swing, el punto de entrada en la clase `Main` y una version de consola opcional en `ConsolaApp`.
 
 ## Documentacion Visual
 
@@ -50,3 +55,4 @@ Puedes consultar el diagrama del proyecto en [DIAGRAMA_PROYECTO.md](DIAGRAMA_PRO
 - Manejo de archivos `.txt`
 - `BufferedReader` y `BufferedWriter`
 - `LocalDateTime` y `Duration`
+- Swing

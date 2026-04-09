@@ -6,8 +6,10 @@ Este documento resume la estructura actual del sistema y como se comunican sus c
 
 ```mermaid
 flowchart TD
-    Operador[Usuario de consola]
+    Operador[Usuario del sistema]
     Main[presentacion.Main]
+    Ventana[presentacion.VentanaPrincipal]
+    Consola[presentacion.ConsolaApp]
 
     UsuarioService[logicanegocio.UsuarioService]
     AccesoService[logicanegocio.AccesoService]
@@ -22,9 +24,13 @@ flowchart TD
     AccesosTxt[(data/accesos.txt)]
 
     Operador --> Main
+    Main --> Ventana
+    Main -. opcion alterna .-> Consola
 
-    Main --> UsuarioService
-    Main --> AccesoService
+    Ventana --> UsuarioService
+    Ventana --> AccesoService
+    Consola --> UsuarioService
+    Consola --> AccesoService
 
     UsuarioService --> UsuarioEntidad
     UsuarioService --> UsuarioDAO
@@ -46,20 +52,25 @@ flowchart TD
 sequenceDiagram
     actor Operador
     participant Main as Main
+    participant UI as VentanaPrincipal
+    participant CLI as ConsolaApp
     participant US as UsuarioService
     participant AS as AccesoService
     participant UDAO as UsuarioDAO
     participant ADAO as AccesoDAO
     participant Data as Archivos TXT
 
-    Operador->>Main: Selecciona una opcion del menu
+    Operador->>Main: Abre la aplicacion
+    Main->>UI: Inicia interfaz grafica
+    Main-->>CLI: Alternativa de consola
+    Operador->>UI: Registra usuarios o movimientos
 
     alt Registro y gestion de usuarios
-        Main->>US: guardarUsuario(), listarUsuarios(), eliminarUsuario()
-        US->>UDAO: guardar(), listar(), eliminar()
+        UI->>US: guardarUsuario(), actualizarUsuario(), listarUsuarios(), eliminarUsuario()
+        US->>UDAO: guardar(), actualizar(), listar(), eliminar(), buscarPorId()
         UDAO->>Data: Lee/escribe usuarios.txt
     else Control de accesos
-        Main->>AS: registrarEntrada(), registrarSalida(), listarAccesos(), calcularTiempoTotalEnLaboratorio()
+        UI->>AS: registrarEntrada(), registrarSalida(), listarAccesos(), calcularTiempoTotalEnLaboratorio()
         AS->>UDAO: listar()
         AS->>ADAO: guardar(), listar(), guardarTodos()
         UDAO->>Data: Lee usuarios.txt
@@ -69,7 +80,7 @@ sequenceDiagram
 
 ## Responsabilidad por Capa
 
-- `presentacion`: muestra el menu, captura datos del usuario y presenta resultados.
+- `presentacion`: abre la interfaz Swing, mantiene una alternativa de consola y presenta resultados al usuario.
 - `logicanegocio`: valida reglas del sistema, evita duplicados y controla accesos activos.
 - `accesodatos`: persiste la informacion en archivos de texto dentro de `data/`.
 - `entidades`: define los objetos de dominio `Usuario` y `Acceso`.
@@ -78,6 +89,10 @@ sequenceDiagram
 
 ```text
 Main
+|- inicia -> VentanaPrincipal
+|- opcion alterna -> ConsolaApp
+|
+VentanaPrincipal
 |- usa -> UsuarioService
 |  |- usa -> UsuarioDAO
 |  |- crea/retorna -> Usuario
@@ -86,6 +101,10 @@ Main
    |- usa -> UsuarioDAO
    |- usa -> AccesoDAO
    |- crea/retorna -> Acceso
+
+ConsolaApp
+|- usa -> UsuarioService
+|- usa -> AccesoService
 
 UsuarioDAO <-> data/usuarios.txt
 AccesoDAO  <-> data/accesos.txt

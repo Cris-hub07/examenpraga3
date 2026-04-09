@@ -94,6 +94,52 @@ public class UsuarioDAO {
         }
     }
 
+    public boolean actualizar(Usuario usuarioActualizado) {
+        List<Usuario> usuarios = listar();
+        boolean encontrado = false;
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getId().equals(usuarioActualizado.getId())) {
+                usuarios.set(i, usuarioActualizado);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            return false;
+        }
+
+        return guardarTodos(usuarios);
+    }
+
+    public Usuario buscarPorId(String id) {
+        List<Usuario> usuarios = listar();
+
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId().equals(id)) {
+                return usuario;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean guardarTodos(List<Usuario> usuarios) {
+        File archivo = obtenerArchivoUsuarios();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+            for (Usuario usuario : usuarios) {
+                writer.write(usuario.getId() + "," + usuario.getNombre() + "," + usuario.getRol());
+                writer.newLine();
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     private File obtenerArchivoUsuarios() {
         File carpeta = new File(CARPETA_DATOS);
 
