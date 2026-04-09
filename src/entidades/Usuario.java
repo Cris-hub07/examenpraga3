@@ -37,10 +37,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", rol='" + rol + '\'' +
-                '}';
+        return id + " - " + nombre + " (" + rol + ")";
     }
 }

@@ -39,10 +39,8 @@ public class Acceso {
 
     @Override
     public String toString() {
-        return "Acceso{" +
-                "idUsuario='" + idUsuario + '\'' +
-                ", fechaHoraEntrada=" + fechaHoraEntrada +
-                ", fechaHoraSalida=" + fechaHoraSalida +
-                '}';
+        return "Acceso de " + idUsuario
+                + " | entrada: " + fechaHoraEntrada
+                + " | salida: " + (fechaHoraSalida == null ? "Pendiente" : fechaHoraSalida);
     }
 }
